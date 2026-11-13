@@ -1,8 +1,8 @@
 {
  "id": "./",
- "name": "NX Audio — محرر ودمج الصوت",
+ "name": "NX Audio — Audio Editor & Merger",
  "short_name": "NX Audio",
- "description": "قص ودمج وتحسين الصوت بالكامل داخل جهازك — بدون رفع ملفات، ويعمل بدون إنترنت.",
+ "description": "Trim, merge and enhance audio entirely on your device — no uploads, works offline.",
  "start_url": "./?source=pwa",
  "scope": "./",
  "display": "standalone",
@@ -13,8 +13,8 @@
  "orientation": "any",
  "background_color": "#000000",
  "theme_color": "#000000",
- "lang": "ar",
- "dir": "rtl",
+ "lang": "en",
+ "dir": "ltr",
  "categories": [
   "music",
   "utilities",
@@ -55,8 +55,8 @@
  ],
  "shortcuts": [
   {
-   "name": "قص الصوت",
-   "short_name": "قص",
+   "name": "Trim audio",
+   "short_name": "Trim",
    "url": "./?go=trim",
    "icons": [
     {
@@ -67,8 +67,8 @@
    ]
   },
   {
-   "name": "دمج المقاطع",
-   "short_name": "دمج",
+   "name": "Merge clips",
+   "short_name": "Merge",
    "url": "./?go=merge",
    "icons": [
     {
@@ -79,8 +79,8 @@
    ]
   },
   {
-   "name": "تسجيل صوت",
-   "short_name": "تسجيل",
+   "name": "Record audio",
+   "short_name": "Record",
    "url": "./?go=rec",
    "icons": [
     {
