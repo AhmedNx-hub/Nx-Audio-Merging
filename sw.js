@@ -1,5 +1,5 @@
 // NX Audio — Service Worker (يُولَّد تلقائياً مع كل إصدار — لا تعدّله يدوياً)
-const VERSION='nx-audio-20261113.0515';
+const VERSION='nx-audio-20261114.0536';
 const SHELL=['./','index.html','manifest.webmanifest','favicon.ico','icon-192.png','icon-512.png','maskable-512.png','apple-touch-icon.png','favicon-32.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});

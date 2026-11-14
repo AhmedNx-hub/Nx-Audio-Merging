@@ -200,8 +200,18 @@ h1{direction:ltr}h1 .ch{display:inline-block;will-change:transform}
 <div class="opts"><button class="go" id="stBtn" type="button">🩺 ابدأ الاختبار العميق</button></div>
 <div id="stSum" class="stsum" aria-live="polite"></div>
 <div id="stRes" class="stres" aria-live="polite"></div>
-<div class="opts"><button class="go sec" id="rpBtn" type="button">📋 نسخ التقرير</button><button class="go sec" id="rpDl" type="button">⬇ تنزيل التقرير</button></div>
+<div class="opts"><button class="go sec" id="rpShare" type="button">📤 إرسال التقرير</button><button class="go sec" id="rpBtn" type="button">📋 نسخ التقرير</button><button class="go sec" id="rpDl" type="button">⬇ تنزيل التقرير</button></div>
 <textarea id="rpText" class="hidden" readonly rows="6" aria-label="تقرير المشكلة"></textarea>
+<b class="sl">⏱ اختبار ملف طويل (ملفك أنت)</b>
+<p class="hint">اختر ملفاً صوتياً طويلاً (20–30 دقيقة). يقيس سرعة الفك والتحليل والترميز واستهلاك الذاكرة وتجمّد الشاشة على جهازك، ويقدّر زمن معالجة الملف كله. لا يغيّر مشروعك.</p>
+<div class="opts"><button class="go" id="ltBtn" type="button">⏱ ابدأ باختيار ملف…</button></div>
+<input type="file" id="ltFile" accept="audio/*,video/*,.flac,.ogg,.opus,.m4a,.aac,.wav,.mp3,.weba" class="sr" aria-label="ملف طويل للاختبار">
+<b class="sl">🔀 مقارنة التقارير</b>
+<p class="hint">يُحفظ ناتج كل اختبار تلقائياً. اختر تقريرين لمعرفة ما تغيّر في النتائج والسرعة، أو استورد تقريراً قديماً.</p>
+<div class="opts"><label>قبل (A)<select id="cmpA"></select></label><label>بعد (B)<select id="cmpB"></select></label></div>
+<div class="opts"><button class="go" id="cmpGo" type="button">🔀 قارن</button><button class="go sec" id="cmpImp" type="button">⬆ استيراد تقرير…</button><button class="go sec" id="cmpCopy" type="button">📋 نسخ المقارنة</button><button class="go sec" id="cmpClr" type="button">🗑 مسح المحفوظ</button></div>
+<input type="file" id="cmpFile" accept=".txt,.json,text/plain,application/json" class="sr" aria-label="استيراد تقرير">
+<div id="cmpOut" class="stres" aria-live="polite"></div>
 </section>
 <section class="stab" data-st="app" role="tabpanel">
 <b class="sl">📲 تثبيت التطبيق</b>
@@ -365,7 +375,7 @@ const LSG=k=>{try{return localStorage.getItem(k)}catch(e){return null}},LSS=(k,v
 let mOn=LSG('nx-meter')!=='0';
 let SROWS=128,page='home',noiseRange=null,reveal=1,vz=null,selOn=false,curOp='';const PAGES={home:'',trim:'✂ قص الصوت',edit:'🎚 تعديل الصوت',merge:'🔗 دمج المقاطع',batch:'📦 معالجة دفعة',silence:'🔇 أدوات الصمت',rec:'🎙 تسجيل صوت'};
 const stc=()=>$$('.stc').find(e=>e.offsetParent!==null)||$('.stc'),vis=q=>!$(q).classList.contains('hidden');
-const APP_BUILD='20261113.0515';let deferredInstall=null,updFound=false;const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+const APP_BUILD='20261114.0536';let deferredInstall=null,updFound=false;const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
 let LANG='en';try{LANG=localStorage.getItem('nx-lang')||'en'}catch(e){}
 setTimeout(()=>document.documentElement.classList.remove('boot'),3000); // احتياط
 const EN={"الوضع النيون": "Neon theme", "النيون": "Neon", "الوضع الداكن": "Dark theme", "الداكن": "Dark", "الوضع الفاتح": "Light theme", "الفاتح": "Light", "دمج مقطعين": "Merge 2 clips", "دمج حتى 4 مقاطع": "Merge up to 4", "تعديل ملف واحد": "Edit one file", "💾 تصدير المقطع بعد التعديلات": "💾 Export clip with edits", "التصدير": "export", "💾 حفظ المشروع": "💾 Save project", "📂 استعادة المشروع": "📂 Restore project", "اختيار المقطع": "Choose a clip", "اضغط لاختيار المقطع الصوتي": "Click or drop an audio file", "لم يتم اختيار ملف": "No file selected", "تحديد الجزء المحذوف": "Select the part to delete", "شريط تحديد الجزء المحذوف. استخدم الأسهم لتحريك المقبض، Enter للتبديل بين البداية والنهاية، Shift لخطوة أكبر": "Selection bar. Use arrow keys to move the handle, Enter to switch between start and end, Shift for bigger steps", "اسحب المقبضين، أو استخدم الأسهم (Shift = ثانية)، Enter للتبديل، Space للتشغيل": "Drag the handles, or use arrows (Shift = 1 s), Enter to switch handle, Space to play", "🔍＋ تكبير": "🔍＋ Zoom in", "🔍－ تصغير": "🔍－ Zoom out", "ملاءمة": "Fit", "⏱ البداية = موضع التشغيل": "⏱ Start = playhead", "⏱ النهاية = موضع التشغيل": "⏱ End = playhead", "▶ استمع للجزء المحذوف": "▶ Listen to the deleted part", "▶ استمع للنتيجة حول نقطة الحذف": "▶ Audition the result around the cut", "بداية (ث)": "Start (s)", "نهاية (ث)": "End (s)", "✂ تطبيق الحذف على المقطع": "✂ Apply deletion to clip", "إبقاء المحدد فقط": "Keep selection only", "إزالة الصمت من الأطراف": "Trim silence at ends", "↶ تراجع": "↶ Undo", "↷ إعادة": "↷ Redo", "قم برفع ملف أولاً": "Upload a file first", "حذف الجزء المحدد": "Delete selected part", "🔥 المقطع النهائي": "🔥 Final clip", "اسم المقطع": "File name", "Fade in (ث)": "Fade in (s)", "Fade out (ث)": "Fade out (s)", "جودة WAV": "WAV quality", "16 بت": "16-bit", "24 بت": "24-bit", "السرعة (تغيّر النغمة)": "Speed (changes pitch)", "توحيد العلو": "Normalize", "عكس المقطع": "Reverse", "تُطبَّق هذه الخيارات عند ضغط زر الدمج أو الحذف": "These options are applied when you press Merge or Delete", "⬇ تحميل الملف النهائي": "⬇ Download final file", "✂ استخدم الناتج كمدخل للقص": "✂ Use result as input for editing", "اسحب لإعادة الترتيب": "Drag to reorder", "تحريك للأعلى": "Move up", "تحريك للأسفل": "Move down", "إزالة المقطع": "Remove clip", "اضغط لاختيار مقطع صوتي": "Click or drop an audio file", "مستوى الصوت %": "Volume %", "طريقة الدمج": "Join mode", "تتابع (واحد بعد الآخر)": "Sequential (one after another)", "مزج (تُسمع معاً)": "Mix (play together)", "فراغ بين المقاطع (ث)": "Gap between clips (s)", "تداخل تدريجي Crossfade (ث)": "Crossfade (s)", "ابدأ الدمج": "Start merge", "اختر مقطعين (أو اسحب ملفين دفعة واحدة) ثم اضغط ابدأ الدمج.": "Pick two clips (or drop both at once), then press Start merge.", "اختر حتى 4 مقاطع دفعة واحدة، رتّبها بالسحب من ⠿ أو بالأسهم، واضبط مستوى كل مقطع.": "Pick up to 4 clips at once, reorder them by dragging ⠿ or with the arrows, and set each clip's volume.", "ارفع ملفاً واحداً وعدّل فيه كما تشاء (قص، تأثيرات، طبقة الصوت، Fade...)، ثم اضغط «تصدير المقطع».": "Upload a single file and edit it as you like (cut, effects, pitch, fades…), then press “Export clip”.", "مقطع {0}": "Clip {0}", "جاري التحميل: {0}": "Loading: {0}", "تم: {0} ({1} ث · {2}Hz · {3})": "Loaded: {0} ({1} s · {2} Hz · {3})", "❌ تعذّر قراءة الملف، تأكد أنه ملف صوتي صالح": "❌ Could not read the file. Make sure it is a valid audio file", "✅ {0} ملف جاهز للدمج · المدة الإجمالية {1} ث": "✅ {0} files ready · total duration {1} s", "الرجاء اختيار الملفين للبدء": "Please choose both files to start", "يجب اختيار ملفين على الأقل": "Choose at least two files", "✅ سيُحذف {0} ثانية. حرّك المقبضين ثم اضغط حذف": "✅ {0} s will be deleted. Adjust the handles, then press Delete", "حدّد جزءاً للحذف بتحريك المقبضين": "Select a part to delete by moving the handles", "الدمج": "merge", "الحذف": "cut", "جاري {0}... ⏳": "Processing {0}… ⏳", "جاري الترميز {0}%": "Encoding {0}%", "لم يتبقَّ أي صوت بعد الحذف.": "No audio would remain after the deletion.", "اكتمل {0} بنجاح! المدة: {1} ث · {2}MB 🎉": "The {0} finished successfully! Duration: {1} s · {2} MB 🎉", "⚠ تم اقتطاع الذروة (clipping): فعّل «توحيد العلو» أو قلّل مستوى الصوت.": "⚠ Peaks were clipped: enable “Normalize” or lower the volume.", "❌ خطأ أثناء {0}: {1}": "❌ Error during {0}: {1}", "الملف كبير جداً لصيغة WAV": "File too large for WAV format", "المقطع الحالي: {0} ث (يمكنك التراجع)": "Current clip: {0} s (you can undo)", "لا يمكن تنفيذ ذلك: لن يتبقى أي صوت": "Not possible: no audio would remain", "المقطع كله صامت": "The clip is completely silent", "لا يوجد صمت في الأطراف": "No silence at the ends", "البداية: {0}": "Start: {0}", "النهاية: {0}": "End: {0}", "✅ تم حفظ المشروع في المتصفح": "✅ Project saved in this browser", "❌ تعذّر الحفظ (قد يكون التخزين معطّلاً)": "❌ Could not save (storage may be disabled)", "لا يوجد مشروع محفوظ": "No saved project", "✅ تمت استعادة المشروع": "✅ Project restored", "❌ تعذّرت الاستعادة": "❌ Could not restore"};
@@ -391,6 +401,7 @@ Object.assign(EN,{"الملف كبير: يحتاج نحو {0}MB في الذاك�
 Object.assign(EN,{"⬇ تثبيت التطبيق على جهازك": "⬇ Install the app on your device", "🔄 تحديث جديد جاهز — أعد فتح التطبيق": "🔄 A new version is ready — reopen the app", "✅ تم تثبيت التطبيق": "✅ App installed", "للتثبيت على آيفون: زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»": "To install on iPhone: tap Share, then “Add to Home Screen”"});
 Object.assign(EN,{"المظهر": "Appearance", "عام": "General", "البيانات": "Data", "الاختصارات": "Shortcuts", "الفحص": "Test", "التطبيق": "App", "🎨 الثيم": "🎨 Theme", "النيون": "Neon", "الداكن": "Dark", "الفاتح": "Light", "🖌 مصمم الثيم الخاص": "🖌 Custom theme designer", "اختر الألوان ثم احفظها باسم. تظهر المعاينة فوراً.": "Pick your colors, then save them under a name. The preview is instant.", "اسم الثيم": "Theme name", "الثيمات المحفوظة": "Saved themes", "— جديد —": "— New —", "الخلفية": "Background", "السطح (البطاقات)": "Surface (cards)", "النص": "Text", "اللون المميز": "Accent", "الأزرار": "Buttons", "نص الأزرار": "Button text", "الحدود": "Borders", "حقول الإدخال": "Inputs", "الموجة": "Waveform", "العنوان والتحذير": "Title & warnings", "✨ توهج النيون": "✨ Neon glow", "↺ ابدأ من الثيم الحالي": "↺ Start from current theme", "💾 حفظ الثيم": "💾 Save theme", "تباين النص {0}:1 · الأزرار {1}:1": "Text contrast {0}:1 · Buttons {1}:1", "⚠ التباين ضعيف — قد يصعب القراءة": "⚠ Low contrast — may be hard to read", "اكتب اسماً للثيم": "Enter a theme name", "✅ تم حفظ الثيم «{0}»": "✅ Theme “{0}” saved", "تم حذف الثيم": "Theme deleted", "لون التطبيق يأتي من الثيم الخاص": "The accent comes from the custom theme", "🌐 اللغة والعرض": "🌐 Language & display", "اللغة": "Language", "⛶ ملء الشاشة": "⛶ Full screen", "ملء الشاشة": "Full screen", "الخروج من ملء الشاشة": "Exit full screen", "⛶ تفعيل ملء الشاشة تلقائياً": "⛶ Enter full screen automatically", "⚡ الأداء والتجربة": "⚡ Performance & experience", "تشغيل/إيقاف": "Play / Pause", "تراجع / إعادة": "Undo / Redo", "تحريك المقبض (Shift = أسرع)": "Move the handle (Shift = faster)", "تبديل المقبض": "Switch handle", "إضافة علامة (صفحة القص)": "Add a marker (Trim page)", "مقارنة A/B (عند المعاينة)": "A/B compare (during preview)", "الرئيسية / إلغاء العملية": "Home / cancel the operation", "فتح هذه القائمة": "Open this list", "📲 تثبيت التطبيق": "📲 Install the app", "✅ التطبيق مثبّت": "✅ App installed", "التثبيت يحتاج فتح النسخة المستضافة (رابط https) وليس ملفاً محلياً": "Installing needs the hosted (https) version, not a local file", "على آيفون/آيباد: اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»": "On iPhone/iPad: tap Share, then “Add to Home Screen”", "على أندرويد: قائمة المتصفح ⋮ ثم «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية»": "On Android: browser menu ⋮ then “Install app” or “Add to Home screen”", "على الكمبيوتر: أيقونة التثبيت في شريط العنوان (Chrome/Edge) أو قائمة المتصفح ← «تثبيت»": "On desktop: the install icon in the address bar (Chrome/Edge) or the browser menu → “Install”", "🔄 البحث عن تحديث": "🔄 Check for updates", "التحديث التلقائي يعمل في النسخة المستضافة فقط": "Automatic updates work in the hosted version only", "✅ أنت على أحدث نسخة": "✅ You are on the latest version", "ℹ عن التطبيق": "ℹ About", "🩺 اختبار ذاتي عميق": "🩺 Deep self-test", "يفحص المعالجة والترميز والتخزين والواجهة والترجمة ويعطيك تقريراً جاهزاً للإرسال. لا يغيّر ملفاتك ولا إعداداتك.": "Checks processing, codecs, storage, the interface and translations, and gives you a report ready to send. It does not change your files or settings.", "🩺 ابدأ الاختبار العميق": "🩺 Start the deep test", "📋 نسخ التقرير": "📋 Copy report", "⬇ تنزيل التقرير": "⬇ Download report", "مصمم الثيم": "Theme designer", "اضغط ⚙ في الشاشة الرئيسية للإعدادات (المظهر واللغة والاختصارات والفحص).": "Tap ⚙ on the home screen for settings (appearance, language, shortcuts, tests)."});
 Object.assign(EN,{"جاري التحضير...": "Preparing…", "موجة التسجيل الحية": "Live recording waveform"});
+Object.assign(EN,{"⏱ اختبار ملف طويل (ملفك أنت)": "⏱ Long-file test (your own file)", "اختر ملفاً صوتياً طويلاً (20–30 دقيقة). يقيس سرعة الفك والتحليل والترميز واستهلاك الذاكرة وتجمّد الشاشة على جهازك، ويقدّر زمن معالجة الملف كله. لا يغيّر مشروعك.": "Pick a long audio file (20–30 minutes). It measures decoding, analysis and encoding speed, memory use and screen freezes on your device, and estimates the time to process the whole file. It does not change your project.", "⏱ ابدأ باختيار ملف…": "⏱ Choose a file to start…", "ملف طويل للاختبار": "Long file for the test", "🔀 مقارنة التقارير": "🔀 Compare reports", "يُحفظ ناتج كل اختبار تلقائياً. اختر تقريرين لمعرفة ما تغيّر في النتائج والسرعة، أو استورد تقريراً قديماً.": "Every test result is saved automatically. Pick two reports to see what changed in results and speed, or import an older report.", "قبل (A)": "Before (A)", "بعد (B)": "After (B)", "🔀 قارن": "🔀 Compare", "⬆ استيراد تقرير…": "⬆ Import a report…", "🗑 مسح المحفوظ": "🗑 Clear saved", "📋 نسخ المقارنة": "📋 Copy comparison", "استيراد تقرير": "Import a report", "📤 إرسال التقرير": "📤 Send report", "الملف كله ≈ {0}": "whole file ≈ {0}", "الملف كله ≈ {0}MB": "whole file ≈ {0} MB", "(شريحة {0} ث)": "({0} s slice)", "مفكوك ≈ {0}MB": "decoded ≈ {0} MB", "مفكوك {0}MB × 3 (ذروة المعالجة) ≈ {1}MB مقابل ≈ {2}MB متاحة": "decoded {0} MB × 3 (processing peak) ≈ {1} MB vs ≈ {2} MB available", "قد تتعطل المعالجة الكاملة، قصّر الملف أو حوّله لمونو": "full processing may fail — shorten the file or convert it to mono", "أطول تجمّد {0} ms · {1} مرة >200ms · {2} مهمة طويلة (أطولها {3} ms)": "longest freeze {0} ms · {1} times >200 ms · {2} long tasks (longest {3} ms)", "⚠ {0} أبطأ من المرة السابقة": "⚠ {0} slower than last time", "{0} تغيّر في النتائج ({1} أسوأ) · {2} أبطأ · {3} أسرع · {4} جديد · {5} محذوف": "{0} result changes ({1} worse) · {2} slower · {3} faster · {4} new · {5} removed", "أبطأ": "slower", "أسرع": "faster", "اختبار جديد": "new test", "اختبار محذوف": "removed test", "✅ لا توجد تراجعات (يُتجاهل فرق التوقيت الأقل من 35%)": "✅ No regressions (timing differences under 35% are ignored)", "نفّذ اختباراً مرتين على الأقل (أو استورد تقريراً) ثم قارن": "Run a test at least twice (or import a report), then compare", "❌ لم أجد نتائج اختبار في هذا الملف": "❌ No test results found in this file", "✅ تم استيراد التقرير ({0} نتيجة)": "✅ Report imported ({0} results)", "تم مسح التقارير المحفوظة": "Saved reports cleared", "قارن أولاً": "Compare first", "✅ تم نسخ المقارنة": "✅ Comparison copied", "تعذّر النسخ": "Copy failed", "تعذّرت المشاركة — تم نسخ التقرير بدلاً منها": "Sharing failed — the report was copied instead", "تعذّرت المشاركة": "Sharing failed"});
 const tt=(k,...a)=>(LANG==='en'&&EN[k]!==undefined?EN[k]:k).replace(/\{(\d)\}/g,(_,i)=>a[i]);
 // ===== سجل الأخطاء (للتقرير) =====
 const ERRLOG=[];function logErr(m){try{ERRLOG.push(new Date().toISOString().slice(11,19)+' '+String(m).slice(0,300));if(ERRLOG.length>20)ERRLOG.shift()}catch(e){}}
@@ -2089,12 +2100,7 @@ async function deepTest(){
   T(B,'Memory: 4 encode/decode cycles do not grow the JS heap',async()=>{const pm=performance.memory;if(!pm)return 'skip';const h0=pm.usedJSHeapSize;for(let i=0;i<4;i++){const bl=await toWav(sine(8,440,.4,2),()=>{},16);await dec(bl);await tick()}await new Promise(r=>setTimeout(r,300));const g=(performance.memory.usedJSHeapSize-h0)/1048576;return g>40?{warn:'heap grew '+g.toFixed(0)+' MB'}:'heap change '+g.toFixed(1)+' MB'});
   // ---------- التنفيذ ----------
   const total=tests.length,R=[],t00=performance.now();let cur=null;
-  const render=()=>{
-    out.innerHTML='';const cats=[...new Set(R.map(r=>r.cat))];
-    cats.forEach(cat=>{const rows=R.filter(r=>r.cat===cat),bad=rows.filter(r=>r.status==='fail'||r.status==='warn').length,d=document.createElement('details');d.className='scat';d.open=bad>0||cat===cur;
-      const sm=document.createElement('summary');sm.textContent=cat+' — '+rows.filter(r=>r.status==='ok').length+'/'+rows.length+(bad?' ⚠':' ✓');d.appendChild(sm);
-      rows.forEach(r=>{const row=document.createElement('div');row.className='sr2 s-'+r.status;const ic0=document.createElement('span');ic0.textContent={ok:'✅',fail:'❌',warn:'⚠️',skip:'➖'}[r.status];const b=document.createElement('b');b.textContent=r.name;const sm2=document.createElement('small');sm2.textContent=(r.note||'')+(r.ms!=null?' · '+Math.round(r.ms)+' ms':'');row.append(ic0,b,sm2);d.appendChild(row)});out.appendChild(d)});
-  };
+  const render=()=>renderRes(out,R,cur);
   for(let i=0;i<total;i++){
     jobCheck();const t=tests[i];cur=t.cat;setBar((i+1)/(total+1));
     const ok=R.filter(r=>r.status==='ok').length,fl=R.filter(r=>r.status==='fail').length;sum.textContent=(i+1)+'/'+total+' · ✅ '+ok+' · ❌ '+fl+' — '+t.name.slice(0,48);
@@ -2122,9 +2128,160 @@ async function deepTest(){
   sect('SKIPPED',R.filter(r=>r.status==='skip'),r=>L.push('[skip] '+r.cat+' › '+r.name));
   L.push('');L.push('=== PASSED (name — note/time) ===');R.filter(r=>r.status==='ok').forEach(r=>L.push('[ok] '+r.cat+' › '+r.name+(r.note?' — '+r.note:'')+(r.ms!=null?' ('+Math.round(r.ms)+' ms)':'')));
   L.push('');L.push('=== Last app errors ('+ERRLOG.length+') ===');ERRLOG.forEach(e=>L.push(e));
+  const run=mkRun('deep',R.map(r=>[r.cat,r.name,r.status,Math.round(r.ms||0),xOf(r.note),String(r.note||'').slice(0,90)])),prev=lastRun('deep',run);
+  if(prev){const c=cmpRuns(prev,run);L.push('');L.push(cmpText(prev,run,c));if(c.slow.length||c.regressed.length)sum.textContent+=' · '+tt('⚠ {0} أبطأ من المرة السابقة',c.slow.length)}
+  L.push('');L.push('=== DATA (machine-readable) ===');L.push(JSON.stringify(run));saveRun(run);
   DEEP_TXT=L.join('\n');LAST_ST=R;
   say(stc(),sum.textContent,cnt('fail')===0);setBar(0);return R;
 }
+
+// ===== التقارير: الحفظ والمقارنة والمشاركة + اختبار الملف الطويل =====
+let LONG_TXT=null;
+const getAC=()=>ac||(ac=new AC());
+const RUNS_KEY='nx-reports';
+function loadRuns(){try{const a=JSON.parse(localStorage.getItem(RUNS_KEY)||'[]');return Array.isArray(a)?a.filter(r=>r&&Array.isArray(r.rows)):[]}catch(e){return[]}}
+function saveRun(run){let a=loadRuns();a.push(run);while(a.length>8||JSON.stringify(a).length>900000)a.shift();try{localStorage.setItem(RUNS_KEY,JSON.stringify(a))}catch(e){}refreshCmpSel(true)}
+const mkRun=(kind,rows,extra)=>Object.assign({v:1,id:Date.now(),kind,ts:new Date().toISOString(),build:APP_BUILD,ua:navigator.userAgent.slice(0,140),cores:navigator.hardwareConcurrency||0,mem:navigator.deviceMemory||0,rows},extra||{});
+const xOf=n=>{const m=/([\d.]+)× realtime/.exec(n||'');return m?+m[1]:0};
+const sameDevice=(a,b)=>a.ua===b.ua&&a.cores===b.cores;
+const lastRun=(kind,dev)=>{const a=loadRuns().filter(r=>r.kind===kind&&(!dev||sameDevice(r,dev)));return a.length?a[a.length-1]:null};
+const runLabel=r=>(r.ts||'').slice(0,16).replace('T',' ')+' · '+r.kind+' · build '+(r.build||'?')+' · '+r.rows.filter(x=>x[2]==='ok').length+'/'+r.rows.length;
+function cmpRuns(A,B){ // قارن نتائج وسرعات اختبارين
+  const key=r=>r[0]+' › '+r[1],ma=new Map(A.rows.map(r=>[key(r),r])),mb=new Map(B.rows.map(r=>[key(r),r])),c={status:[],slow:[],fast:[],added:[],removed:[]};
+  for(const [k,rb] of mb){
+    const ra=ma.get(k);if(!ra){c.added.push(k);continue}
+    if(ra[2]!==rb[2])c.status.push({k,from:ra[2],to:rb[2],note:rb[5]||''});
+    let ratio=0,fa='',fb='';
+    if(ra[4]&&rb[4]){ratio=ra[4]/rb[4];fa=ra[4].toFixed(1)+'×';fb=rb[4].toFixed(1)+'×'}
+    else if(ra[3]>60&&rb[3]>60){ratio=rb[3]/ra[3];fa=ra[3]+' ms';fb=rb[3]+' ms'}
+    if(ratio>1.35)c.slow.push({k,ratio,fa,fb});else if(ratio&&ratio<1/1.35)c.fast.push({k,ratio:1/ratio,fa,fb});
+  }
+  for(const k of ma.keys())if(!mb.has(k))c.removed.push(k);
+  c.slow.sort((x,y)=>y.ratio-x.ratio);c.fast.sort((x,y)=>y.ratio-x.ratio);
+  c.regressed=c.status.filter(s=>s.from==='ok'&&s.to==='fail'||s.from==='ok'&&s.to==='warn');c.fixed=c.status.filter(s=>(s.from==='fail'||s.from==='warn')&&s.to==='ok');
+  return c;
+}
+function cmpText(A,B,c){
+  const L=['=== COMPARISON ===','A: '+runLabel(A),'B: '+runLabel(B),'Tests: '+A.rows.length+' → '+B.rows.length+' | status changes: '+c.status.length+' ('+c.regressed.length+' worse, '+c.fixed.length+' better) | slower: '+c.slow.length+' | faster: '+c.fast.length+' | new: '+c.added.length+' | removed: '+c.removed.length];
+  c.status.forEach(s=>L.push('[STATUS] '+s.k+': '+s.from+' → '+s.to+(s.note?' — '+s.note:'')));
+  c.slow.forEach(s=>L.push('[SLOWER x'+s.ratio.toFixed(2)+'] '+s.k+': '+s.fa+' → '+s.fb));
+  c.fast.forEach(s=>L.push('[faster x'+s.ratio.toFixed(2)+'] '+s.k+': '+s.fa+' → '+s.fb));
+  c.added.forEach(k=>L.push('[new] '+k));c.removed.forEach(k=>L.push('[removed] '+k));
+  if(!c.status.length&&!c.slow.length&&!c.added.length&&!c.removed.length)L.push('No regressions detected (timing noise below 35% is ignored).');
+  return L.join('\n');
+}
+function parseReport(text){ // يقرأ تقريراً (JSON مضمّن أو نص قديم)
+  const j=text.lastIndexOf('=== DATA (machine-readable) ===');
+  if(j>=0){try{const r=JSON.parse(text.slice(j).split('\n').slice(1).join('\n').trim());if(r&&Array.isArray(r.rows))return r}catch(e){}}
+  try{const r=JSON.parse(text);if(r&&Array.isArray(r.rows))return r}catch(e){}
+  const rows=[],mm={ok:'ok',FAIL:'fail',WARN:'warn',skip:'skip'};
+  text.split('\n').forEach(l=>{const m=/^\[(ok|FAIL|WARN|skip)\] ([^›]+?) › (.+)$/.exec(l);if(!m)return;let rest=m[3],ms=0,note='';const t=/ \((\d+) ms\)$/.exec(rest);if(t){ms=+t[1];rest=rest.slice(0,t.index)}const d=rest.indexOf(' — ');let name=rest;if(d>=0){name=rest.slice(0,d);note=rest.slice(d+3)}rows.push([m[2].trim(),name.trim(),mm[m[1]],ms,xOf(note),note.slice(0,90)])});
+  if(!rows.length)return null;
+  const b=/build ([\d.]+)/.exec(text),ts=/(\d{4}-\d\d-\d\dT[\d:.]+Z)/.exec(text);
+  return {v:1,id:Date.now(),kind:'imported',ts:ts?ts[1]:new Date().toISOString(),build:b?b[1]:'?',ua:'imported',cores:0,mem:0,rows};
+}
+function refreshCmpSel(reset){ // بعد كل حفظ: A = السابق، B = الأحدث
+  const a=loadRuns(),A=$('#cmpA'),B=$('#cmpB');if(!A)return;const ka=reset?'':A.value,kb=reset?'':B.value;A.innerHTML='';B.innerHTML='';
+  a.forEach(r=>{[A,B].forEach(s=>{const o=document.createElement('option');o.value=r.id;o.textContent=runLabel(r);s.appendChild(o)})});
+  if(a.length){A.value=a.some(r=>String(r.id)===ka)?ka:a[Math.max(0,a.length-2)].id;B.value=a.some(r=>String(r.id)===kb)?kb:a[a.length-1].id}
+}
+let CMP_TXT='';
+function showCmp(A,B){
+  const c=cmpRuns(A,B),out=$('#cmpOut');out.innerHTML='';CMP_TXT=cmpText(A,B,c);
+  const head=document.createElement('p');head.className='hint';head.textContent=tt('{0} تغيّر في النتائج ({1} أسوأ) · {2} أبطأ · {3} أسرع · {4} جديد · {5} محذوف',c.status.length,c.regressed.length,c.slow.length,c.fast.length,c.added.length,c.removed.length);out.appendChild(head);
+  const row=(cls,sym,t,s)=>{const r=document.createElement('div');r.className='sr2 '+cls;const i=document.createElement('span'),b=document.createElement('b'),sm=document.createElement('small');i.textContent=sym;b.textContent=t;sm.textContent=s;r.append(i,b,sm);out.appendChild(r)};
+  c.status.forEach(s=>row(s.to==='ok'?'s-ok':'s-fail',s.to==='ok'?'✅':'❌',s.k,s.from+' → '+s.to+(s.note?' — '+s.note:'')));
+  c.slow.forEach(s=>row('s-warn','🐢',s.k,s.fa+' → '+s.fb+' (×'+s.ratio.toFixed(2)+' '+tt('أبطأ')+')'));
+  c.fast.forEach(s=>row('s-ok','🚀',s.k,s.fa+' → '+s.fb+' (×'+s.ratio.toFixed(2)+' '+tt('أسرع')+')'));
+  c.added.forEach(k=>row('','➕',k,tt('اختبار جديد')));c.removed.forEach(k=>row('','➖',k,tt('اختبار محذوف')));
+  if(!c.status.length&&!c.slow.length&&!c.added.length&&!c.removed.length){const p=document.createElement('p');p.className='hint ok';p.textContent=tt('✅ لا توجد تراجعات (يُتجاهل فرق التوقيت الأقل من 35%)');out.appendChild(p)}
+}
+$('#cmpGo').onclick=()=>{const a=loadRuns(),A=a.find(r=>String(r.id)===$('#cmpA').value),B=a.find(r=>String(r.id)===$('#cmpB').value);if(!A||!B||A===B&&a.length<2)return toast(tt('نفّذ اختباراً مرتين على الأقل (أو استورد تقريراً) ثم قارن'),true);showCmp(A,B)};
+$('#cmpImp').onclick=()=>$('#cmpFile').click();
+$('#cmpFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const r=parseReport(await f.text());if(!r)return toast(tt('❌ لم أجد نتائج اختبار في هذا الملف'),true);r.id=Date.now();saveRun(r);toast(tt('✅ تم استيراد التقرير ({0} نتيجة)',r.rows.length))};
+$('#cmpClr').onclick=()=>{localStorage.removeItem(RUNS_KEY);refreshCmpSel();$('#cmpOut').innerHTML='';toast(tt('تم مسح التقارير المحفوظة'))};
+$('#cmpCopy').onclick=async()=>{if(!CMP_TXT)return toast(tt('قارن أولاً'),true);toast(await copyText(CMP_TXT)?tt('✅ تم نسخ المقارنة'):tt('تعذّر النسخ'),false)};
+// ---------- مشاركة التقرير ----------
+const repStamp=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())};
+async function shareReport(){
+  const txt=repText(),name='nx-audio-report-'+repStamp()+'.txt';
+  try{
+    const f=new File([txt],name,{type:'text/plain'});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'NX Audio report',text:'NX Audio '+APP_BUILD});return}
+    if(navigator.share){await navigator.share({title:'NX Audio report',text:txt});return}
+  }catch(e){if(e&&e.name==='AbortError')return}
+  toast((await copyText(txt))?tt('تعذّرت المشاركة — تم نسخ التقرير بدلاً منها'):tt('تعذّرت المشاركة'),false);
+}
+$('#rpShare').onclick=shareReport;if(!navigator.share)$('#rpShare').classList.add('hidden');
+// ---------- عرض النتائج (مشترك) ----------
+function renderRes(out,R,cur){
+  out.innerHTML='';
+  [...new Set(R.map(r=>r.cat))].forEach(cat=>{
+    const rows=R.filter(r=>r.cat===cat),bad=rows.filter(r=>r.status==='fail'||r.status==='warn').length,d=document.createElement('details'),sm=document.createElement('summary');
+    d.className='scat';d.open=bad>0||cat===cur;sm.textContent=cat+' — '+rows.filter(r=>r.status==='ok').length+'/'+rows.length+(bad?' ⚠':' ✓');d.appendChild(sm);
+    rows.forEach(r=>{const row=document.createElement('div'),i0=document.createElement('span'),b=document.createElement('b'),s2=document.createElement('small');row.className='sr2 s-'+r.status;i0.textContent={ok:'✅',fail:'❌',warn:'⚠️',skip:'➖'}[r.status];b.textContent=r.name;s2.textContent=(r.note||'')+(r.ms!=null?' · '+Math.round(r.ms)+' ms':'');row.append(i0,b,s2);d.appendChild(row)});
+    out.appendChild(d);
+  });
+}
+// ---------- اختبار الملف الطويل ----------
+function startMon(){
+  const st={max:0,over:0,long:0,longMax:0};let last=performance.now(),po=null;
+  const iv=setInterval(()=>{const n=performance.now(),d=n-last-100;if(d>st.max)st.max=d;if(d>200)st.over++;last=n},100);
+  try{po=new PerformanceObserver(l=>{for(const e of l.getEntries()){st.long++;if(e.duration>st.longMax)st.longMax=e.duration}});po.observe({entryTypes:['longtask']})}catch(e){}
+  return{st,stop(){clearInterval(iv);if(po)po.disconnect();return st}};
+}
+async function longTest(file){
+  const out=$('#stRes'),sum=$('#stSum');out.innerHTML='';LONG_TXT=null;
+  const mbf=v=>Math.round(v/1048576),isW=/\.wav$/i.test(file.name)||/wav/i.test(file.type),est=file.size*(isW?2:12)/1048576,lim=(navigator.deviceMemory||4)*1024*.35;
+  if(est>lim&&!confirm(tt('الملف كبير: يحتاج نحو {0}MB في الذاكرة بعد الفك وقد يتعطل جهازك. المتابعة؟',Math.round(est)))){sum.textContent=tt('تم إلغاء فتح الملف الكبير');return}
+  const R=[],mon=startMon(),t00=performance.now(),heap=()=>performance.memory?performance.memory.usedJSHeapSize/1048576:0;let peak=heap(),b=null,sl=null,D=0,SL=0;
+  const fmtT=s=>etaFmt(s),total=18;let n=0;
+  async function stage(name,fn,dur){
+    jobCheck();n++;setBar(n/(total+1));sum.textContent=n+'/'+total+' · '+name+'…';
+    const t=performance.now();let st='ok',note='',d=dur||0;
+    try{const r=await fn();if(r==='skip'){st='skip';note=tt('غير مدعوم في هذا المتصفح')}else if(r){note=r.note||'';if(r.dur)d=r.dur}}catch(e){if(e&&e.message==='CANCELLED')throw e;st='fail';note=String((e&&e.message)||e).slice(0,200)}
+    const ms=performance.now()-t,h=heap();if(h>peak)peak=h;
+    let x=0;if(st==='ok'&&d&&ms>0){x=d/(ms/1000);note=(note?note+' · ':'')+x.toFixed(1)+'× realtime'+(sl&&d===SL&&D>SL?' → '+tt('الملف كله ≈ {0}',fmtT(ms/1000*D/SL)):'')}
+    R.push({cat:'Long file',name,status:st,ms:st==='skip'?null:ms,note,x});renderRes(out,R,'Long file');await tick();
+  }
+  await stage('Decode (full file)',async()=>{const ab=await file.arrayBuffer();b=await getAC().decodeAudioData(ab);D=b.duration;SL=Math.min(60,D);sl=slice(b,Math.max(0,Math.min(D-SL,D*.25)),Math.max(0,Math.min(D-SL,D*.25))+SL);return{note:D.toFixed(1)+' s ('+etaFmt(D)+'), '+b.sampleRate+' Hz, '+b.numberOfChannels+' ch, '+tt('مفكوك ≈ {0}MB',mbf(b.length*b.numberOfChannels*4))+', file '+mbf(file.size)+' MB',dur:D}});
+  if(!b){mon.stop();sum.textContent='❌ '+R[0].note;LONG_TXT='NX Audio long-file test — decode failed: '+R[0].note;return}
+  await stage('Waveform peaks (full)',()=>{getPeaks(b,2000,0,D)},D);
+  await stage('Colour bands (full)',()=>{if(D*b.sampleRate>=6e7)return'skip';bandPeaks(b,1000,0,D)},D);
+  await stage('Loudness + LRA (full)',()=>{const L=lufs(b);return{note:'LUFS '+(isFinite(L.lufs)?L.lufs.toFixed(1):'-∞')+' · LRA '+L.lra.toFixed(1)+' LU · peak '+L.peak.toFixed(1)+' dB'}},D);
+  await stage('Diagnosis (full)',async()=>{const g=diagnoseGen(b);let r;while(!(r=g.next()).done)await tick();return{note:(r.value.issues.map(i=>i.k).join(', ')||'no issues')}},D);
+  await stage('Spectrogram (full)',()=>{spectrogram(b,480,128,20000,0,D)},D);
+  await stage('Silence scan (full)',()=>{const r=silenceRegions(b,silenceTh(b),1.2);return{note:r.length+' gaps'}},D);
+  const FULLX=D>SL?tt('(شريحة {0} ث)',Math.round(SL)):'';
+  await stage('WAV encode '+FULLX,async()=>{const bl=await toWav(sl,()=>{},16);return{note:mbf(bl.size)+' MB → '+tt('الملف كله ≈ {0}MB',mbf(bl.size*D/SL))}},SL);
+  await stage('MP3 128 kbps '+FULLX,async()=>{const bl=await encodeMp3(sl,()=>{},128);return{note:mbf(bl.size*10)/10+' MB'}},SL);
+  await stage('Opus 48 kbps '+FULLX,async()=>{if(typeof AudioEncoder==='undefined'||!$$('#fmt option').some(o=>o.value==='opus'))return'skip';await encodeOpus(sl,()=>{},48)},SL);
+  await stage('Normalize −14 LUFS '+FULLX,()=>{normalizeLufs(sl,-14,-1)},SL);
+  await stage('Noise reduction '+FULLX,async()=>{await denoiseAsync(sl,{s:.6,rng:null},()=>{})},SL);
+  await stage('Time-stretch ×1.25 '+FULLX,async()=>{await pitchTempo(sl,{semi:0,tempo:1.25,tape:1,dur:0},()=>{})},SL);
+  await stage('Pitch +3 semitones '+FULLX,async()=>{await pitchTempo(sl,{semi:3,tempo:1,tape:1,dur:0},()=>{})},SL);
+  await stage('EQ + reverb '+FULLX,async()=>{await applyFx(sl,{bass:4,treble:2,echo:0,rv:30})},SL);
+  await stage('Voice enhance '+FULLX,async()=>{await enhanceAsync(sl)},SL);
+  await stage('Speech leveller '+FULLX,()=>{autoLevel(sl,.7)},SL);
+  await stage('Mono 32 kHz shrink '+FULLX,async()=>{await shrinkAsync(sl)},SL);
+  const st=mon.stop(),dec0=b.length*b.numberOfChannels*4/1048576,avail=(navigator.deviceMemory||4)*1024*.5,need=dec0*3,h1=heap();
+  R.push({cat:'Long file',name:'Memory estimate',status:need>avail?'warn':'ok',ms:null,note:tt('مفكوك {0}MB × 3 (ذروة المعالجة) ≈ {1}MB مقابل ≈ {2}MB متاحة',Math.round(dec0),Math.round(need),Math.round(avail))+(peak?' · JS heap peak '+Math.round(peak)+' MB':'')+(need>avail?' — '+tt('قد تتعطل المعالجة الكاملة، قصّر الملف أو حوّله لمونو'):''),x:0});
+  R.push({cat:'Long file',name:'UI responsiveness during the test',status:st.max>3000?'warn':'ok',ms:null,note:tt('أطول تجمّد {0} ms · {1} مرة >200ms · {2} مهمة طويلة (أطولها {3} ms)',Math.round(st.max),st.over,st.long,Math.round(st.longMax)),x:0});
+  renderRes(out,R,'Long file');
+  const cnt=s=>R.filter(r=>r.status===s).length,secs=((performance.now()-t00)/1000).toFixed(1);
+  sum.textContent=tt('الإجمالي: {0} نجح · {1} فشل · {2} تخطّي',cnt('ok'),cnt('fail'),cnt('skip'))+(cnt('warn')?' · ⚠ '+cnt('warn'):'')+' ('+secs+' s)';
+  const run=mkRun('long',R.map(r=>['Long file',r.name,r.status,Math.round(r.ms||0),r.x||0,String(r.note||'').slice(0,90)]),{dur:Math.round(D),file:file.name.slice(0,60)}),prev=lastRun('long',run),c=prev?cmpRuns(prev,run):null;
+  const L=[APP_VER+' — long-file test — '+new Date().toISOString(),'RESULT: '+cnt('ok')+' ok, '+cnt('fail')+' FAILED, '+cnt('warn')+' warnings, '+cnt('skip')+' skipped ('+secs+' s)','File: '+file.name+' | '+mbf(file.size)+' MB | '+D.toFixed(1)+' s | '+b.sampleRate+' Hz | '+b.numberOfChannels+' ch','UA: '+navigator.userAgent,'Cores: '+(navigator.hardwareConcurrency||'?')+' | Memory(GB): '+(navigator.deviceMemory||'?')+' | Standalone: '+standalone+' | Lite: '+document.documentElement.classList.contains('lite'),''];
+  R.forEach(r=>L.push('['+({ok:'ok',fail:'FAIL',warn:'WARN',skip:'skip'}[r.status])+'] Long file › '+r.name+(r.note?' — '+r.note:'')+(r.ms!=null?' ('+Math.round(r.ms)+' ms)':'')));
+  if(prev){L.push('');L.push(cmpText(prev,run,c))}
+  L.push('');L.push('=== DATA (machine-readable) ===');L.push(JSON.stringify(run));
+  LONG_TXT=L.join('\n');saveRun(run);
+  if(prev&&(c.slow.length||c.regressed.length))sum.textContent+=' · '+tt('⚠ {0} أبطأ من المرة السابقة',c.slow.length);
+  b=null;sl=null;setBar(0);say(stc(),sum.textContent,cnt('fail')===0);
+}
+$('#ltBtn').onclick=()=>$('#ltFile').click();
+$('#ltFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{await longTest(f)}catch(err){$('#stSum').textContent=/CANCELLED$/.test(err.message)?tt('⏹ تم الإلغاء'):'❌ '+errMsg(err)}};
+refreshCmpSel();
 
 function buildReport(){
   const n=navigator,L=[];
@@ -2142,7 +2299,7 @@ function buildReport(){
 }
 async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){const ta=$('#rpText');ta.classList.remove('hidden');ta.value=t;ta.select();try{return document.execCommand('copy')}catch(e2){return false}}}
 $('#stBtn').onclick=async()=>{try{await deepTest()}catch(e){$('#stSum').textContent=/CANCELLED$/.test(e.message)?tt('⏹ تم الإلغاء'):'❌ '+errMsg(e)}};
-const repText=()=>DEEP_TXT||buildReport();
+const repText=()=>[DEEP_TXT,LONG_TXT].filter(Boolean).join('\n\n')||buildReport();
 $('#rpDl').onclick=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');dlFile('nx-audio-report-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'.txt',new Blob([repText()],{type:'text/plain'}))};
 $('#rpBtn').onclick=async()=>{const t=repText(),ok=await copyText(t);if(!ok){const ta=$('#rpText');ta.classList.remove('hidden');ta.value=t}toast(ok?tt('✅ تم نسخ التقرير — الصقه في المحادثة'):tt('انسخ النص من المربع أدناه يدوياً'),!ok,5000)};
 // ===== تصدير سريع لمنصة =====
@@ -2515,7 +2672,7 @@ setTheme(LSG('nx-audio-theme')||'neon');
 // ===== تغليف العمليات الطويلة بنظام الإلغاء =====
 function jobWrap(f){return async function(...a){jobStart();try{return await f.apply(this,a)}finally{jobEnd();PLAT=null}}}
 ['encode','encodeMp3','encodeOpus','stretch','denoiseAsync','enhanceAsync','applyFx','changeSpeed','conform','voiceFx','shrinkAsync'].forEach(n=>{globalThis[n]=wrapAb(globalThis[n])});
-run=jobWrap(run);exportSegments=jobWrap(exportSegments);deepTest=jobWrap(deepTest);fixFlow=jobWrap(fixFlow);
+run=jobWrap(run);exportSegments=jobWrap(exportSegments);deepTest=jobWrap(deepTest);longTest=jobWrap(longTest);fixFlow=jobWrap(fixFlow);
 ['tEnh','tNr','tPt','tPv','tFx','go-batch'].forEach(id=>{const el=$('#'+id);el.onclick=jobWrap(el.onclick)});
 $('#cancelBtn').onclick=jobCancel;
 {const h=$('h1');h.innerHTML=[...h.textContent].map(c=>c===' '?' ':'<span class="ch pre">'+c+'</span>').join('')}
